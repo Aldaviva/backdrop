@@ -1,26 +1,28 @@
-package com.aldaviva.backdrop;
+package com.aldaviva.backdrop.service.impl;
 
-import java.io.IOException;
+import com.aldaviva.backdrop.R;
+import com.aldaviva.backdrop.service.BackdropService;
 
 import android.app.WallpaperManager;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 
+import java.io.File;
+import java.io.IOException;
+
+import roboguice.util.Ln;
+
+import com.google.inject.Inject;
+
 public class BackdropServiceImpl implements BackdropService {
 
-	private final WallpaperManager wallpaperManager;
-	private final Context context;
-
-	public BackdropServiceImpl(final Context context) {
-		this.context = context;
-		wallpaperManager = WallpaperManager.getInstance(context);
-//		final int minWidth = wallpaperManager.getDesiredMinimumWidth();
-//		final int minHeight = wallpaperManager.getDesiredMinimumHeight();
-//		Toast.makeText(context, "Desired size: " + minWidth + " x " + minHeight, Toast.LENGTH_LONG).show();
-	}
+	@Inject private WallpaperManager wallpaperManager;
+	@Inject private Resources resources;
+	@Inject private Context context;
 
 	@Override
 	public void setBackgroundToBoris() {
@@ -33,9 +35,14 @@ public class BackdropServiceImpl implements BackdropService {
 	}
 
 	private void setBackgroundToDrawable(final int drawableId) {
-		final Bitmap sourceBitmap = BitmapFactory.decodeResource(context.getResources(), drawableId);
+		final Bitmap sourceBitmap = BitmapFactory.decodeResource(resources, drawableId);
 
 		setBackgroundToBitmap(sourceBitmap);
+	}
+
+	@Override
+	public void setBackgroundToFile(final File file){
+		setBackgroundToBitmap(BitmapFactory.decodeFile(file.getAbsolutePath()));
 	}
 
 	private void setBackgroundToBitmap(final Bitmap sourceBitmap) {
@@ -61,7 +68,7 @@ public class BackdropServiceImpl implements BackdropService {
 		try {
 			wallpaperManager.setBitmap(letterboxedBitmap);
 		} catch (final IOException e) {
-			e.printStackTrace();
+			Ln.e(e, "WallpaperManager rejected bitmap");
 		}
 	}
 

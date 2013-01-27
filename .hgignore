@@ -1,5 +1,7 @@
-bin
-.settings
-gen
-.project
-.classpath
+syntax: regexp
+^\.classpath
+^\.project
+^\.settings\/
+^bin\/
+^gen\/
+^target\/
