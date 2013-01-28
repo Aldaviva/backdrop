@@ -1,7 +1,7 @@
 package com.aldaviva.backdrop.service.impl;
 
 import com.aldaviva.backdrop.R;
-import com.aldaviva.backdrop.service.BackdropService;
+import com.aldaviva.backdrop.service.WallpaperManagerService;
 
 import android.app.WallpaperManager;
 import android.content.Context;
@@ -18,7 +18,7 @@ import roboguice.util.Ln;
 
 import com.google.inject.Inject;
 
-public class BackdropServiceImpl implements BackdropService {
+public class WallpaperManagerServiceImpl implements WallpaperManagerService {
 
 	@Inject private WallpaperManager wallpaperManager;
 	@Inject private Resources resources;

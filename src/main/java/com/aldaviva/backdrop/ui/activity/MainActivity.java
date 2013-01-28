@@ -1,8 +1,9 @@
 package com.aldaviva.backdrop.ui.activity;
 
 import com.aldaviva.backdrop.R;
-import com.aldaviva.backdrop.service.BackdropService;
 import com.aldaviva.backdrop.service.ImageDownloadService;
+import com.aldaviva.backdrop.service.UpdateService;
+import com.aldaviva.backdrop.service.WallpaperManagerService;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,8 +12,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
@@ -26,9 +25,11 @@ public class MainActivity extends RoboActivity {
 	@InjectView(R.id.button1) private Button button1;
 	@InjectView(R.id.button2) private Button button2;
 	@InjectView(R.id.button3) private Button button3;
+	@InjectView(R.id.button4) private Button button4;
 
-	@Inject private BackdropService backdropService;
+	@Inject private WallpaperManagerService backdropService;
 	@Inject private ImageDownloadService imageDownloadService;
+	@Inject private UpdateService updateService;
 
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
@@ -55,15 +56,33 @@ public class MainActivity extends RoboActivity {
 
 			@Override
 			public void onClick(final View arg0) {
-				try {
-					setBackgroundToUri(new URI("http://farm9.staticflickr.com/8508/8400010419_859d3e67b8_b.jpg"));
-				} catch (final URISyntaxException e) {
-				}
+				setBackgroundToUri("http://farm9.staticflickr.com/8508/8400010419_859d3e67b8_b.jpg");
+			}
+		});
+
+		button4.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(final View v) {
+				new SafeAsyncTask<Void>(){
+
+					@Override
+					public Void call() throws Exception {
+						updateService.updateWallpaper();
+						return null;
+					}
+
+					@Override
+					protected void onThrowable(final Throwable t) throws RuntimeException {
+						Ln.e(t, "Unable to set wallpaper!");
+					}
+
+				}.execute();
 			}
 		});
 	}
 
-	public void setBackgroundToUri(final URI uri){
+	public void setBackgroundToUri(final String uri){
 		new SafeAsyncTask<Void>() {
 
 			@Override

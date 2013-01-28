@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URI;
 
 import org.springframework.util.support.Base64;
 import org.springframework.web.client.RestOperations;
@@ -23,18 +22,18 @@ public class ImageDownloadServiceImpl implements ImageDownloadService {
 	@Inject private Context context;
 
 	@Override
-	public File downloadImage(final URI uri) {
+	public File downloadImage(final String uri) {
 		final byte[] imageBytes = retrieveBytes(uri);
 		final String filename = getFilename(uri);
 		saveFile(filename, imageBytes);
 		return context.getFileStreamPath(filename);
 	}
 
-	private byte[] retrieveBytes(final URI uri) {
+	private byte[] retrieveBytes(final String uri) {
 		return rest.getForObject(uri, byte[].class);
 	}
 
-	protected String getFilename(final URI uri){
+	protected String getFilename(final String uri){
 		try {
 			return Base64.encodeBytes(uri.toString().getBytes(), Base64.URL_SAFE) + ".jpg";
 		} catch (final IOException e) {

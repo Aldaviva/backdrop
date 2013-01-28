@@ -9,7 +9,6 @@ import android.content.Context;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
 
 import org.jukito.JukitoModule;
@@ -43,7 +42,7 @@ public class ImageDownloadServiceTest {
 
 	@Test
 	public void testFilenameEncoding() throws URISyntaxException{
-		final String actual = imageDownloadService.getFilename(new URI("http://www.aldaviva.com/headlights.png"));
+		final String actual = imageDownloadService.getFilename("http://www.aldaviva.com/headlights.png");
 		final String expected = "aHR0cDovL3d3dy5hbGRhdml2YS5jb20vaGVhZGxpZ2h0cy5wbmc=.jpg";
 
 		assertEquals(expected, actual);
@@ -52,11 +51,11 @@ public class ImageDownloadServiceTest {
 	@Test
 	public void testDownloadImage() throws URISyntaxException, IOException{
 		final FileOutputStream mockFileOutputStream = mock(FileOutputStream.class);
-		final URI uri = new URI("http://www.aldaviva.com/headlights.png");
+		final String uri = "http://www.aldaviva.com/headlights.png";
 		final byte[] fakeImageData = new byte[]{1, 2, 3};
 		final File fakeFile = new File("/data/data/com.aldaviva.backdrop/files/aHR0cDovL3d3dy5hbGRhdml2YS5jb20vaGVhZGxpZ2h0cy5wbmc=.jpg");
 
-		when(rest.getForObject(isA(URI.class), (Class<byte[]>) any()))
+		when(rest.getForObject(isA(String.class), (Class<byte[]>) any()))
 			.thenReturn(fakeImageData);
 
 		when(context.openFileOutput(anyString(), anyInt()))
