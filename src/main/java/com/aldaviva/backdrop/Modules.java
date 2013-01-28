@@ -1,6 +1,6 @@
 package com.aldaviva.backdrop;
 
-import com.aldaviva.backdrop.data.OpenHelper;
+import com.aldaviva.backdrop.data.AppDatabaseOpenHelper;
 import com.aldaviva.backdrop.data.dao.PhotoDao;
 import com.aldaviva.backdrop.data.dao.SubscriptionDao;
 import com.aldaviva.backdrop.data.dao.impl.PhotoDaoImpl;
@@ -84,7 +84,7 @@ public class Modules extends AbstractModule {
 	@Provides
 	@Singleton
 	protected ConnectionSource connectionSourceProvider(final Application context) {
-		return new AndroidConnectionSource(new OpenHelper(context));
+		return new AndroidConnectionSource(new AppDatabaseOpenHelper(context));
 	}
 
 }

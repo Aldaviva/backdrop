@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import roboguice.util.Ln;
+
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.j256.ormlite.stmt.QueryBuilder;
@@ -57,7 +59,9 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 				.limit(1L)
 				.offset(randomOffset);
 
-			return query.queryForFirst();
+			final Subscription result = query.queryForFirst();
+			Ln.i("Picked subscription %s out of %d choices", result.getName(), count);
+			return result;
 
 		} catch (final SQLException e) {
 			throw new RuntimeException(e);

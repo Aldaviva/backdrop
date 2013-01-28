@@ -6,7 +6,7 @@ import org.simpleframework.xml.Path;
 import org.simpleframework.xml.Root;
 
 @Root(name="rsp", strict=false)
-public class PhotostreamResponseEnvelope {
+public class PhotolistResponseEnvelope {
 
 	@Attribute(name="total") @Path("photos") private int count;
 
@@ -20,6 +20,8 @@ public class PhotostreamResponseEnvelope {
 		@Attribute private int server;
 		@Attribute private String secret;
 		@Attribute private String title;
+		@Attribute(required=false) private String owner;
+		@Attribute(required=false) private String ownername;
 
 		public long getId() {
 			return id;
@@ -59,6 +61,22 @@ public class PhotostreamResponseEnvelope {
 
 		public void setTitle(final String title) {
 			this.title = title;
+		}
+
+		public String getOwner() {
+			return owner;
+		}
+
+		public void setOwner(final String owner) {
+			this.owner = owner;
+		}
+
+		public String getOwnername() {
+			return ownername;
+		}
+
+		public void setOwnername(final String ownername) {
+			this.ownername = ownername;
 		}
 	}
 

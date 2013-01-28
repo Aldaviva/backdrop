@@ -18,12 +18,12 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
-public class OpenHelper extends OrmLiteSqliteOpenHelper {
+public class AppDatabaseOpenHelper extends OrmLiteSqliteOpenHelper {
 
 	private static final int DATABASE_VERSION = 1;
 	private static final String DATABASE_NAME = "data.db";
 
-	public OpenHelper(final Application context) {
+	public AppDatabaseOpenHelper(final Application context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
 
@@ -60,6 +60,14 @@ public class OpenHelper extends OrmLiteSqliteOpenHelper {
 			Ln.w("Neither created nor updated subscription to remizova's photostream!");
 		}
 
+		final Subscription explore = new Subscription();
+		explore.setEnabled(true);
+		explore.setId(1L);
+		explore.setFlickrId(null);
+		explore.setName("Explore");
+		explore.setType(SubscriptionType.EXPLORE);
+
+		subscriptionDao.createOrUpdate(explore);
 	}
 
 	@Override

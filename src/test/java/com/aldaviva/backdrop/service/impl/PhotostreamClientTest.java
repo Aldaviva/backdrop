@@ -6,8 +6,8 @@ import static org.junit.Assert.*;
 import com.aldaviva.backdrop.Modules;
 import com.aldaviva.backdrop.data.entity.Subscription;
 import com.aldaviva.backdrop.remoting.impl.PhotostreamClient;
-import com.aldaviva.backdrop.remoting.marshal.PhotostreamResponseEnvelope;
-import com.aldaviva.backdrop.remoting.marshal.PhotostreamResponseEnvelope.PhotoEnvelope;
+import com.aldaviva.backdrop.remoting.marshal.PhotolistResponseEnvelope;
+import com.aldaviva.backdrop.remoting.marshal.PhotolistResponseEnvelope.PhotoEnvelope;
 
 import java.io.StringWriter;
 
@@ -46,13 +46,13 @@ public class PhotostreamClientTest {
 	@Test
 	public void testDeserialize() throws Exception{
 		final Serializer serializer = new Persister();
-		final PhotostreamResponseEnvelope actual = serializer.read(PhotostreamResponseEnvelope.class, "<?xml version=\"1.0\" encoding=\"utf-8\" ?>"+
+		final PhotolistResponseEnvelope actual = serializer.read(PhotolistResponseEnvelope.class, "<?xml version=\"1.0\" encoding=\"utf-8\" ?>"+
 				"<rsp stat=\"ok\">"+
 				"  <photos page=\"1\" pages=\"2066\" perpage=\"1\" total=\"2066\">"+
 				"    <photo id=\"8420431125\" owner=\"50241002@N04\" secret=\"be18df0ca9\" server=\"8517\" farm=\"9\" title=\"Lincoln\" ispublic=\"1\" isfriend=\"0\" isfamily=\"0\" />"+
 				"  </photos>"+
 				"</rsp>");
-		final PhotostreamResponseEnvelope expected = new PhotostreamResponseEnvelope();
+		final PhotolistResponseEnvelope expected = new PhotolistResponseEnvelope();
 		expected.setCount(2066);
 		final PhotoEnvelope expectedPhoto = new PhotoEnvelope();
 		expectedPhoto.setFarm(9);
@@ -60,6 +60,7 @@ public class PhotostreamClientTest {
 		expectedPhoto.setSecret("be18df0ca9");
 		expectedPhoto.setServer(8517);
 		expectedPhoto.setTitle("Lincoln");
+		expectedPhoto.setOwner("50241002@N04");
 		expected.setPhoto(expectedPhoto);
 		assertEquals(expected.getCount(), actual.getCount());
 		assertThat(actual.getPhoto(), samePropertyValuesAs(expectedPhoto));
@@ -69,7 +70,7 @@ public class PhotostreamClientTest {
 	public void testSerialize() throws Exception{
 		final Serializer serializer = new Persister();
 
-		final PhotostreamResponseEnvelope env = new PhotostreamResponseEnvelope();
+		final PhotolistResponseEnvelope env = new PhotolistResponseEnvelope();
 		env.setCount(2066);
 		final PhotoEnvelope expectedPhoto = new PhotoEnvelope();
 		expectedPhoto.setFarm(9);
@@ -77,6 +78,7 @@ public class PhotostreamClientTest {
 		expectedPhoto.setSecret("be18df0ca9");
 		expectedPhoto.setServer(8517);
 		expectedPhoto.setTitle("Lincoln");
+		expectedPhoto.setOwner("50241002@N04");
 		env.setPhoto(expectedPhoto);
 		final StringWriter writer = new StringWriter();
 		serializer.write(env, writer);
