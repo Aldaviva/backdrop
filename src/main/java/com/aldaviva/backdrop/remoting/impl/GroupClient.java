@@ -1,18 +1,20 @@
 package com.aldaviva.backdrop.remoting.impl;
 
-import com.aldaviva.backdrop.data.entity.Photo;
 import com.aldaviva.backdrop.data.entity.Subscription;
 
-public class GroupClient extends FlickrClient {
+import org.springframework.web.util.UriComponentsBuilder;
+
+
+public class GroupClient extends FlickrPhotoListClient {
 
 	@Override
-	public Photo getRandomPhoto(Subscription subscription) {
-		return null;
+	public String getFlickrMethod() {
+		return "flickr.groups.pools.getPhotos";
 	}
 
 	@Override
-	public int getCount(Subscription subscription) {
-		return 0;
+	protected UriComponentsBuilder getUriBuilder(final Subscription subscription) {
+		return super.getUriBuilder(subscription)
+				.queryParam("group_id", subscription.getFlickrId());
 	}
-
 }

@@ -68,6 +68,15 @@ public class AppDatabaseOpenHelper extends OrmLiteSqliteOpenHelper {
 		explore.setType(SubscriptionType.EXPLORE);
 
 		subscriptionDao.createOrUpdate(explore);
+
+		final Subscription silhouette = new Subscription();
+		silhouette.setEnabled(true);
+		silhouette.setId(2L);
+		silhouette.setFlickrId("48111895@N00");
+		silhouette.setName("Silhouette");
+		silhouette.setType(SubscriptionType.GROUP);
+
+		subscriptionDao.createOrUpdate(silhouette);
 	}
 
 	@Override
