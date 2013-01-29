@@ -2,6 +2,7 @@ package com.aldaviva.backdrop.ui.activity;
 
 import com.aldaviva.backdrop.R;
 import com.aldaviva.backdrop.service.ImageDownloadService;
+import com.aldaviva.backdrop.service.SchedulingService;
 import com.aldaviva.backdrop.service.UpdateService;
 import com.aldaviva.backdrop.service.WallpaperManagerService;
 
@@ -10,6 +11,9 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import java.io.File;
 
@@ -22,43 +26,46 @@ import com.google.inject.Inject;
 
 public class MainActivity extends RoboActivity {
 
-	@InjectView(R.id.button1) private Button button1;
-	@InjectView(R.id.button2) private Button button2;
-	@InjectView(R.id.button3) private Button button3;
+//	@InjectView(R.id.button1) private Button button1;
+//	@InjectView(R.id.button2) private Button button2;
+//	@InjectView(R.id.button3) private Button button3;
 	@InjectView(R.id.button4) private Button button4;
+	@InjectView(R.id.button5) private Button button5;
+	@InjectView(R.id.checkBox1) private CheckBox checkbox1;
 
 	@Inject private WallpaperManagerService backdropService;
 	@Inject private ImageDownloadService imageDownloadService;
 	@Inject private UpdateService updateService;
+	@Inject private SchedulingService schedulingService;
 
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		button1.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(final View v) {
-				backdropService.setBackgroundToLego();
-			}
-		});
-
-		button2.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(final View v) {
-				backdropService.setBackgroundToBoris();
-			}
-		});
-
-		button3.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(final View arg0) {
-				setBackgroundToUri("http://farm9.staticflickr.com/8508/8400010419_859d3e67b8_b.jpg");
-			}
-		});
+//		button1.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(final View v) {
+//				backdropService.setBackgroundToLego();
+//			}
+//		});
+//
+//		button2.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(final View v) {
+//				backdropService.setBackgroundToBoris();
+//			}
+//		});
+//
+//		button3.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(final View arg0) {
+//				setBackgroundToUri("http://farm9.staticflickr.com/8508/8400010419_859d3e67b8_b.jpg");
+//			}
+//		});
 
 		button4.setOnClickListener(new OnClickListener() {
 
@@ -78,6 +85,23 @@ public class MainActivity extends RoboActivity {
 					}
 
 				}.execute();
+			}
+		});
+
+		button5.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(final View v) {
+				schedulingService.updateImmediately();
+			}
+		});
+
+		checkbox1.setChecked(schedulingService.isScheduleEnabled());
+
+		checkbox1.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
+				schedulingService.setScheduleEnabled(isChecked);
 			}
 		});
 	}

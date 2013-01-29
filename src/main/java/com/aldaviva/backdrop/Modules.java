@@ -53,9 +53,9 @@ public class Modules extends AbstractModule {
 
 		bind(WallpaperManagerService.class).to(WallpaperManagerServiceImpl.class);
 		bind(ImageDownloadService.class).to(ImageDownloadServiceImpl.class);
-		bind(SchedulingService.class).to(SchedulingServiceImpl.class);
 		bind(UpdateService.class).to(UpdateServiceImpl.class);
 		bind(SubscriptionService.class).to(SubscriptionServiceImpl.class);
+		bind(SchedulingService.class).to(SchedulingServiceImpl.class).in(Scopes.SINGLETON);
 
 		bind(RemoteClient.class).annotatedWith(Names.named(SubscriptionType.Names.PHOTOSTREAM)).to(PhotostreamClient.class);
 		bind(RemoteClient.class).annotatedWith(Names.named(SubscriptionType.Names.COMMONS)).to(CommonsClient.class);

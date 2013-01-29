@@ -7,8 +7,12 @@ public interface SchedulingService {
 
 	boolean isScheduleEnabled();
 
+	void setScheduleEnabled(boolean isScheduleEnabled);
+
 	long getInterval();
 
 	void setInterval(long interval);
+
+	void updateImmediately();
 
 }
